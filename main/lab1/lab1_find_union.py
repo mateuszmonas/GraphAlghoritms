@@ -29,4 +29,3 @@ def main():
     g = load_weighted_graph('graphs-lab1/path10000')
     g[1].sort(key=lambda x: x[2], reverse=True)
     print(zad(g, 0, 1))
-

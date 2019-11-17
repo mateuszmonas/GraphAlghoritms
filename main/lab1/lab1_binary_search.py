@@ -32,21 +32,40 @@ class Node:
 
 class Graph:
 
-    def __init__(self) -> None:
+    def __init__(self, g) -> None:
         super().__init__()
         self.nodes: Dict[int, Node] = {}
+        self.generate_graph(g)
 
-    def dfs(self):
-        self.search(Queue())
+    def generate_graph(self, g):
+        for e in g[1]:
+            self.add_edge(e[0], e[1], e[2])
 
-    def bfs(self):
-        self.search(LifoQueue())
-
-    def search(self, vertices):
+    def dfs_min_weight(self, start, end, min_weight) -> bool:
+        vertices = LifoQueue()
         visited: Set[int] = set()
-        first = next(iter(self.nodes))
-        visited.add(first)
-        vertices.put(first)
+        visited.add(start)
+        vertices.put(start)
+        while not vertices.empty():
+            curr = vertices.get()
+            for k, v in self.nodes[curr].edges.items():
+                if k not in visited and v >= min_weight:
+                    if k == end:
+                        return True
+                    visited.add(k)
+                    vertices.put(k)
+        return False
+
+    def bfs(self, start: int):
+        self.search(start, Queue())
+
+    def dfs(self, start: int):
+        self.search(start, LifoQueue())
+
+    def search(self, start, vertices):
+        visited: Set[int] = set()
+        visited.add(start)
+        vertices.put(start)
         while not vertices.empty():
             curr = vertices.get()
             print(curr)
@@ -68,29 +87,19 @@ class Graph:
         self.nodes[node_b].remove_edge(node_a)
 
 
-def dfs(graph, visited, path, i, j):
-    i = i - 1
-    j = j - 1
-    visited[i] = True
-    for e in graph[i]:
-        if e[0] == j:
-            path.append(e)
-            return True
-        if visited[e[0]]:
-            continue
-        path.append(e)
-        if dfs(graph, visited, path, e[0] + 1, j + 1):
-            return True
-        path.pop()
+def min_weight_binary_search(graph: Graph, start: int, end: int, min_weight: int, max_weight: int):
+    while min_weight <= max_weight:
+        curr_weight = int((min_weight + max_weight) / 2)
+        if graph.dfs_min_weight(start, end, curr_weight):
+            min_weight = curr_weight + 1
+        else:
+            max_weight = curr_weight - 1
+    if graph.dfs_min_weight(start, end, curr_weight):
+        return curr_weight
+    return curr_weight - 1
 
 
-def adj_list(g):
-    graph = Graph()
-    for e in g[1]:
-        graph.add_edge(e[0], e[1], e[2])
-    return graph
-
-
-graph = adj_list(load_weighted_graph('graphs-lab1/clique5'))
-graph.dfs()
-graph.bfs()
+g = load_weighted_graph('graphs-lab1/pp1000')
+graph = Graph(g)
+max_weight = max(g[1], key=lambda x: x[2])[2]
+print(min_weight_binary_search(graph, 1, 2, 0, max_weight))
