@@ -25,7 +25,6 @@ def remove_edge(graph, node_a, node_b):
     graph[node_b].remove_edge(node_a)
 
 
-
 def print_graph(graph):
     for k, v in graph.items():
         print(v.label, v.edges)
@@ -53,7 +52,6 @@ def minimum_cut_phase(graph):
             v.remove_weight(node)
         heapq.heapify(heap)
 
-
     if len(last_two) < 2:
         result = graph[last_two[0]].count_all_weights()
         merge_vertices(graph, 0, last_two[0])
@@ -61,6 +59,7 @@ def minimum_cut_phase(graph):
         result = graph[last_two[1]].count_all_weights()
         merge_vertices(graph, last_two[0], last_two[1])
     return result
+
 
 class Node:
 
@@ -73,7 +72,7 @@ class Node:
     def count_all_weights(self):
         weight = 0
         for k, v in self.edges.items():
-            weight+=v
+            weight += v
         return weight
 
     def count_weights_to_nodes(self, S):
@@ -114,12 +113,12 @@ def merge_vertices(graph, node_a, node_b):
 
 
 def main():
-    g = adj_list(load_weighted_graph('graphs-lab1-lab3/geo100_2a'))
+    g = adj_list(load_weighted_graph('graphs-lab3/geo100_2a'))
     result = 10000000000
-    for i in range(0, len(g)-1):
+    for i in range(0, len(g) - 1):
         potential_result = minimum_cut_phase(g)
-        if(potential_result<result):
-            result=potential_result
+        if (potential_result < result):
+            result = potential_result
     print(result)
 
 
