@@ -1,4 +1,4 @@
-from main.lab1.load_weighted_graph import load_weighted_graph
+from main.lab1.graph import load_weighted_graph
 
 
 def union(vertices, edge):
@@ -26,6 +26,6 @@ def zad(g, i, j):
 
 
 def main():
-    g = load_weighted_graph('graphs-lab1/path10000')
+    g = load_weighted_graph('graphs-lab1/clique5')
     g[1].sort(key=lambda x: x[2], reverse=True)
     print(zad(g, 0, 1))
