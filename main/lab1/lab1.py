@@ -80,7 +80,7 @@ def adj_list(g, min_weight):
 
 
 def main():
-    g = load_weighted_graph('graphs/clique1000')
+    g = load_weighted_graph('graphs-lab1/clique1000')
     g[1].sort(key=lambda x: x[2], reverse=True)
     min_weight = zad(g, 0, 1)
     path = []
