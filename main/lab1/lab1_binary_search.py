@@ -1,4 +1,5 @@
-from main.lab1.graph import load_weighted_graph, Graph
+from main.dimacs import load_weighted_graph
+from main.lab1.graph import Graph
 
 
 def min_weight_binary_search(graph: Graph, start: int, end: int, min_weight: int, max_weight: int):
@@ -14,7 +15,7 @@ def min_weight_binary_search(graph: Graph, start: int, end: int, min_weight: int
     return curr_weight - 1
 
 
-g = load_weighted_graph('graphs-lab1/pp1000')
+g = load_weighted_graph('graphs-lab1/rand1000_100000')
 graph = Graph(g)
 max_weight = max(g[1], key=lambda x: x[2])[2]
 print(min_weight_binary_search(graph, 1, 2, 0, max_weight))

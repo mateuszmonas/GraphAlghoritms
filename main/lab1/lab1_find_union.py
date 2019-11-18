@@ -1,4 +1,4 @@
-from main.lab1.graph import load_weighted_graph
+from main.dimacs import load_weighted_graph
 
 
 def union(vertices, edge):
