@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 class NodeTemplate:
 
     def __init__(self, key):
@@ -9,12 +8,17 @@ class NodeTemplate:
         self.key = key
 
     def add_edge(self, to: int, weight: int):
-        self.edges[to] = self.edges.get(to, 0) + weight
+        self.edges[to] = weight
 
     def remove_edge(self, to: int):
         if to in self.edges.keys():
             del self.edges[to]
 
+    def __str__(self):
+        result = str(self.key)+ ': '
+        for k, v in self.edges.items():
+            result += '(' + str(k) + ', ' + str(v) + '), '
+        return result
 
 class GraphTemplate:
 
@@ -39,3 +43,9 @@ class GraphTemplate:
     def remove_edge(self, node_a: int, node_b: int):
         self.nodes[node_a].remove_edge(node_b)
         self.nodes[node_b].remove_edge(node_a)
+
+    def __str__(self):
+        result = ''
+        for k, v in self.nodes.items():
+            result += str(v) + '\n'
+        return result

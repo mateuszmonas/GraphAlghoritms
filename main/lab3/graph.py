@@ -14,6 +14,9 @@ class Node(NodeTemplate):
         self.label = str(key)
         self.weights_sum = 0
 
+    def add_edge(self, to: int, weight: int):
+        self.edges[to] = self.edges.get(to, 0) + weight
+
     def sum_weights_to(self, S: Set[int]):
         self.weights_sum = 0
         for e in S:
