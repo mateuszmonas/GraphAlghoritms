@@ -54,7 +54,6 @@ class Node(NodeTemplate):
 class Graph(GraphTemplate):
 
     def __init__(self, g) -> None:
-        self.nodes: Dict[int, Node] = {}
         super().__init__(g, Node)
 
     def merge_vertices(self, node_a, node_b):
