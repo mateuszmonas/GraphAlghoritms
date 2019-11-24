@@ -12,7 +12,8 @@ class NodeTemplate:
         self.edges[to] = self.edges.get(to, 0) + weight
 
     def remove_edge(self, to: int):
-        del self.edges[to]
+        if to in self.edges.keys():
+            del self.edges[to]
 
 
 class GraphTemplate:
