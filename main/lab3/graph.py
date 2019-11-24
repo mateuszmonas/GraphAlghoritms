@@ -69,34 +69,32 @@ class Graph(GraphTemplate):
     def min_cut_phase(self):
         a = next(iter(self.nodes.keys()))
         S = {a}
-        queue = []
+        queue = PriorityQueue()
         # count all nodes weights
         for k, v in self.nodes.items():
             if v.active:
                 v.sum_weights_to(S)
-                heapq.heappush(queue, v)
+                queue.put(v)
 
-        last_two = []
-        while queue:
-            node = heapq.heappop(queue)
+        insertion_order = []
+        while not queue.empty():
+            node = queue.get()
             key = node.key
             if key in S:
                 continue
-            for n in queue:
-                n.add_weight(key)
-            heapq.heapify(queue)
+            for k in node.edges:
+                self.nodes[k].add_weight(key)
+                queue.put(self.nodes[k])
 
             S.add(key)
-            if len(queue) < 2:
-                last_two.append(key)
+            insertion_order.append(key)
 
-        if len(last_two) >= 2:
-            s = last_two[1]
-            t = last_two[0]
+        s = insertion_order.pop()
+        if len(insertion_order) >= 1:
+            t = insertion_order.pop()
             result = self.nodes[s].sum_all_weights()
             self.merge_vertices(t, s)
             return result
-        s = last_two[0]
         result = self.nodes[s].sum_all_weights()
         self.merge_vertices(a, s)
         return result
