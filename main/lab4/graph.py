@@ -10,6 +10,7 @@ class Node(NodeTemplate):
 
     def __init__(self, key):
         super().__init__(key)
+        self.color = None
 
     def __str__(self):
         return str(self.key)
@@ -19,6 +20,22 @@ class Graph(GraphTemplate):
 
     def __init__(self, g) -> None:
         super().__init__(g, Node)
+
+    def find_min_coloring(self):
+        order = self.lex_bfs(1)
+        chromatic_number = 0
+        for key in order:
+            used = set()
+            curr_node = self.nodes[key]
+            for n in curr_node.edges:
+                used.add(self.nodes[n].color)
+            for i in range(len(order)):
+                if i not in used:
+                    if i > chromatic_number:
+                        chromatic_number = i
+                    curr_node.color = i
+                    break
+        return chromatic_number+1
 
     def get_rn(self, order: List[int], key):
         curr_node = self.nodes[key]
