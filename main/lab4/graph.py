@@ -23,14 +23,14 @@ class Graph(GraphTemplate):
     def get_rn(self, order: List[int], key):
         curr_node = self.nodes[key]
         rn = set()
-        for i in range(0, key):
+        for i in range(0, order.index(key)):
             if order[i] in curr_node.edges.keys():
                 rn.add(order[i])
         return rn
 
     def get_parent(self, order: List[int], key):
         curr_node = self.nodes[key]
-        for i in reversed(range(0, key)):
+        for i in reversed(range(0, order.index(key))):
             if order[i] in curr_node.edges.keys():
                 return order[i]
         return None
@@ -45,6 +45,15 @@ class Graph(GraphTemplate):
             if parent is not None and not rns[key].difference({parent}).issubset(rns[parent]):
                 return False
         return True
+
+    def find_biggest_clique(self):
+        order = self.lex_bfs(1)
+        max_size = 0
+        for key in order:
+            size = len(self.get_rn(order, key))
+            if size > max_size:
+                max_size = size
+        return max_size + 1
 
     def lex_bfs(self, start: int):
         vertices: PriorityQueue[Node] = PriorityQueue()
@@ -65,9 +74,9 @@ class Graph(GraphTemplate):
                     if node in self.nodes[curr].edges:
                         nodes_subset.add(node)
                 nodes = nodes.difference(nodes_subset)
-                if len(nodes) >0:
+                if len(nodes) > 0:
                     new_vertices_set.append(nodes)
-                if len(nodes_subset)>0:
+                if len(nodes_subset) > 0:
                     new_vertices_set.append(nodes_subset)
             vertices_sets = new_vertices_set
         return visit_order
