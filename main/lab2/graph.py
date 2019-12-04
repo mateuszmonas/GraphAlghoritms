@@ -85,8 +85,7 @@ class Graph(GraphTemplate):
                 while True:
                     if self.dfs(i+1, j+1) is None:
                         current_cut = -self.nodes[j+1].sum_flow()
-                        if current_cut < minimal_cut:
-                            minimal_cut = current_cut
+                        minimal_cut = min(minimal_cut, current_cut)
                         break
 
         return minimal_cut
