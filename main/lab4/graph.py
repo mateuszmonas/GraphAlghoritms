@@ -37,6 +37,20 @@ class Graph(GraphTemplate):
                     break
         return chromatic_number+1
 
+    def find_min_vertex_cover(self):
+        order = self.lex_bfs(1)
+        independent_set = set()
+        for key in reversed(order):
+            curr_node = self.nodes[key]
+            if curr_node.edges.keys().isdisjoint(independent_set):
+                independent_set.add(key)
+        vertex_cover = set()
+        for key in self.nodes:
+            if key not in independent_set:
+                vertex_cover.add(key)
+        return len(vertex_cover)
+
+
     def get_rn(self, order: List[int], key):
         curr_node = self.nodes[key]
         rn = set()
